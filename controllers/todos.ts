@@ -1,23 +1,23 @@
-import { GetTodosModel } from '../models/todos';
+import { GetTodosModel, CreateTodoModel,GetTodoModel, UpdateTodoModel, DeleteTodoModel } from '../models/todos';
 
 const GetTodos = async () => {
-    await GetTodosModel();
+    return await GetTodosModel();
 }
 
 const GetTodo = async (id: String) => {
-    // get a todo
+    return await GetTodoModel(id)
 }
 
 const CreateTodo = async (todo: Todo) => {
-    // create a todo
+    return await CreateTodoModel(todo);
 }
 
 const UpdateTodo = async (id: String, todo: Todo) => {
-    // update a todo
+    return await UpdateTodoModel(id, todo);
 }
 
 const DeleteTodo = async (id: String) => {
-    // delete a todo
+    return await DeleteTodoModel(id);
 }
 
 export {

@@ -1,5 +1,8 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+
+import './db'
 
 dotenv.config();
 
@@ -8,8 +11,9 @@ import todoRouter from './routes/todos';
 const app: Express = express();
 const port = process.env.PORT;
 
+app.use(bodyParser.json());
+
 app.get('/', (req: Request, res: Response) => {
-  console.log('53test')
   res.send('Express + TypeScript Server');
 });
 

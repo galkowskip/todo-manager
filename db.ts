@@ -1,15 +1,16 @@
-// connect to postgresql
+// connect to mongodb
 
-import { Pool } from 'pg';
+import mongoose from 'mongoose';
 
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'testdb',
-    password: 'postgres',
-    port: 5432,
+const uri = 'mongodb://root:example@mongo:27017/mydatabase?authSource=admin';
+
+mongoose.connect(uri);
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('Connected to MongoDB');
 });
 
-export {
-    pool,
-}
+
+export { db };
