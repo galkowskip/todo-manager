@@ -9,6 +9,7 @@ const app: Express = express();
 const port = process.env.PORT;
 
 app.get('/', (req: Request, res: Response) => {
+  console.log('53test')
   res.send('Express + TypeScript Server');
 });
 

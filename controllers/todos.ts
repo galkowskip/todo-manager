@@ -1,7 +1,7 @@
-// todos controller
+import { GetTodosModel } from '../models/todos';
 
 const GetTodos = async () => {
-    // get list of todos
+    await GetTodosModel();
 }
 
 const GetTodo = async (id: String) => {
