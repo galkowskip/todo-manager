@@ -15,10 +15,9 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use((req, res, next) => {
+app.use((req, _, next) => {
   console.log('Origin: ', req.headers.origin);
   console.log('Method: ', req.method);
-  console.log('Headers: ', req.headers);
   next();
 });
 

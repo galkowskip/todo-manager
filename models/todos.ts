@@ -1,10 +1,24 @@
 // use postgress to control todos
-import { db } from '../db';
+import '../db';
 import { ToDo } from '../schema/todos';
 
-const GetTodosModel = async () => {
+const GetTodosModel = async (): Promise<Todo[] | []> => {
     try {
-        const todos = await ToDo.find({}).exec();
+        const response = await ToDo.find({}).exec();
+
+        if (!response) {
+            return [];
+        }
+        const todos = response.map((todo) => {
+            return {
+                _id: todo.id as string,
+                title: todo.title as string,
+                description: todo.description as string,
+                completed: todo.completed as boolean,
+                createdAt: todo.createdAt as string,
+                updatedAt: todo.updatedAt as string
+            } as Todo
+        })
 
         return todos;
     } catch (error) {
@@ -13,9 +27,22 @@ const GetTodosModel = async () => {
     }
 }
 
-const GetTodoModel = async (id: String) => {
+const GetTodoModel = async (id: String): Promise<Todo> => {
     try {
-        const todo = await ToDo.find({ id }).exec();
+        const response = await ToDo.findById(id).exec();
+        if (!response) {
+            throw new Error('Todo not found');
+        }
+
+        const todo = {
+            _id: response.id as string,
+            title: response.title as string,
+            description: response.description as string,
+            completed: response.completed as boolean,
+            createdAt: response.createdAt as string,
+            updatedAt: response.updatedAt as string
+        } as Todo
+
         return todo;
     } catch (error) {
         console.log(error)
@@ -23,7 +50,7 @@ const GetTodoModel = async (id: String) => {
     }
 }
 
-const CreateTodoModel = async (todo: Todo) => {
+const CreateTodoModel = async (todo: Todo): Promise<Boolean> => {
     try {
         const newTodo = new ToDo({
             title: todo.title,
@@ -34,16 +61,29 @@ const CreateTodoModel = async (todo: Todo) => {
         });
 
         await newTodo.save();
-        return newTodo;
+        return true;
     } catch (error) {
         console.log(error)
         throw error
     }
 }
 
-const UpdateTodoModel = async (id: String, todo: Todo) => {
+const UpdateTodoModel = async (id: String, todo: Todo): Promise<Todo> => {
     try {
-        const updatedTodo = await ToDo.findOneAndUpdate({ id }, todo, { new: true }).exec();
+        const response = await ToDo.findByIdAndUpdate(id, todo, { new: true }).exec();
+
+        if (!response) {
+            throw new Error('Todo not found');
+        }
+
+        const updatedTodo = {
+            title: response.title as string,
+            description: response.description as string,
+            completed: response.completed as boolean,
+            createdAt: response.createdAt as string,
+            updatedAt: response.updatedAt as string
+        } as Todo
+
         return updatedTodo;
     } catch (error) {
         console.log(error)
@@ -51,10 +91,10 @@ const UpdateTodoModel = async (id: String, todo: Todo) => {
     }
 }
 
-const DeleteTodoModel = async (id: String) => {
+const DeleteTodoModel = async (id: String): Promise<Boolean> => {
     try {
-        const deletedTodo = await ToDo.findOneAndDelete({ id }).exec();
-        return deletedTodo;
+        await ToDo.findOneAndDelete({ id }).exec();
+        return true;
     } catch (error) {
         console.log(error)
         throw error

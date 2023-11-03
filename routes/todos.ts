@@ -24,8 +24,9 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     const id = req.params.id
     const todo = req.body
-    
-    const updatedTodo = await UpdateTodo(id, todo,)
+
+    const updatedTodo = await UpdateTodo(id, todo)
+    console.log(updatedTodo)
     res.send(updatedTodo)
 })
 
