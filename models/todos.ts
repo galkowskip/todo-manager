@@ -103,7 +103,7 @@ const UpdateTodoModel = async (id: String, todo: Todo): Promise<Todo> => {
 
 const DeleteTodoModel = async (id: String): Promise<Boolean> => {
     try {
-        await ToDo.findOneAndDelete({ id }).exec();
+        await ToDo.findByIdAndDelete(id).exec();
         return true;
     } catch (error) {
         console.log(error)
