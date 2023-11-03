@@ -1,4 +1,4 @@
-import { GetTodosModel, CreateTodoModel,GetTodoModel, UpdateTodoModel, DeleteTodoModel } from '../models/todos';
+import { GetTodosModel, CreateTodoModel, GetTodoModel, UpdateTodoModel, DeleteTodoModel } from '../models/todos';
 
 const GetTodos = async () => {
     return await GetTodosModel();
