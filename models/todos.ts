@@ -50,7 +50,7 @@ const GetTodoModel = async (id: String): Promise<Todo> => {
     }
 }
 
-const CreateTodoModel = async (todo: Todo): Promise<Boolean> => {
+const CreateTodoModel = async (todo: Todo): Promise<Todo> => {
     try {
         const newTodo = new ToDo({
             title: todo.title,
@@ -58,10 +58,20 @@ const CreateTodoModel = async (todo: Todo): Promise<Boolean> => {
             completed: todo.completed,
             createdAt: todo.createdAt,
             updatedAt: todo.updatedAt
-        });
+        })
 
-        await newTodo.save();
-        return true;
+        const response = await newTodo.save();
+
+        const createdTodo = {
+            _id: response.id as string,
+            title: response.title as string,
+            description: response.description as string,
+            completed: response.completed as boolean,
+            createdAt: response.createdAt as string,
+            updatedAt: response.updatedAt as string
+        } as Todo
+
+        return createdTodo;
     } catch (error) {
         console.log(error)
         throw error

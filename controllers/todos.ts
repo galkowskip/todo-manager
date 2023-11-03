@@ -8,7 +8,7 @@ const GetTodo = async (id: String): Promise<Todo> => {
     return await GetTodoModel(id)
 }
 
-const CreateTodo = async (todo: Todo): Promise<Boolean> => {
+const CreateTodo = async (todo: Todo): Promise<Todo> => {
     return await CreateTodoModel(todo);
 }
 
