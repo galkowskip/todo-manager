@@ -50,6 +50,14 @@ const GetTodoModel = async (id: String): Promise<Todo> => {
     }
 }
 
+const GetCategoryTodosModel = async (category: String): Promise<Todo[] | []> => {
+    try {
+
+
+    }
+
+}
+
 const CreateTodoModel = async (todo: Todo): Promise<Todo> => {
     try {
         const newTodo = new ToDo({
@@ -57,7 +65,8 @@ const CreateTodoModel = async (todo: Todo): Promise<Todo> => {
             description: todo.description,
             completed: todo.completed,
             createdAt: todo.createdAt,
-            updatedAt: todo.updatedAt
+            updatedAt: todo.updatedAt,
+            category: todo.category
         })
 
         const response = await newTodo.save();
