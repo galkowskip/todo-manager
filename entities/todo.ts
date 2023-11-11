@@ -1,5 +1,5 @@
 
-interface Todo {
+interface TodoEntity {
     _id: string;
     title: string;
     description: string;
@@ -10,12 +10,17 @@ interface Todo {
     category: string;
 }
 
-interface TodoCategory {
+interface TodoCategoryEntity {
     _id: string;
     name: string;
     description: string;
     color: string;
     createdAt: string;
     updatedAt: string;
-    items: Todo[];
+    numberOfItems: number;
+}
+
+export type {
+    TodoEntity,
+    TodoCategoryEntity
 }

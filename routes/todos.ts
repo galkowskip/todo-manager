@@ -1,4 +1,4 @@
-import {Router} from "express"
+import { Router } from "express"
 
 import { GetTodos, GetTodo, CreateTodo, UpdateTodo, DeleteTodo } from "../controllers/todos"
 
@@ -26,7 +26,6 @@ router.put('/:id', async (req, res) => {
     const todo = req.body
 
     const updatedTodo = await UpdateTodo(id, todo)
-    console.log(updatedTodo)
     res.send(updatedTodo)
 })
 

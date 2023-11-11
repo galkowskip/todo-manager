@@ -1,24 +1,20 @@
-import { GetTodosModel, CreateTodoModel, GetTodoModel, UpdateTodoModel, DeleteTodoModel, GetCategoryTodosModel } from '../models/todos';
+import type { TodoEntity } from '../entities/todo';
 
-const GetTodos = async (): Promise<Todo[] | []> => {
+import { GetTodosModel, CreateTodoModel, GetTodoModel, UpdateTodoModel, DeleteTodoModel, } from '../models/todos';
+
+const GetTodos = async (): Promise<TodoEntity[] | []> => {
     return await GetTodosModel();
 }
 
-const GetTodo = async (id: String): Promise<Todo> => {
+const GetTodo = async (id: String): Promise<TodoEntity> => {
     return await GetTodoModel(id)
 }
 
-const GetCategoryTodos = async (category: String): Promise<Todo[] | []> => {
-    return await GetCategoryTodosModel(category);
-
-
-}
-
-const CreateTodo = async (todo: Todo): Promise<Todo> => {
+const CreateTodo = async (todo: TodoEntity): Promise<TodoEntity> => {
     return await CreateTodoModel(todo);
 }
 
-const UpdateTodo = async (id: String, todo: Todo): Promise<Todo> => {
+const UpdateTodo = async (id: String, todo: TodoEntity): Promise<TodoEntity> => {
     return await UpdateTodoModel(id, todo);
 }
 

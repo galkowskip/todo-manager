@@ -1,23 +1,24 @@
 // use postgress to control todos
 import '../db';
+import type { TodoEntity } from '../entities/todo';
 import { ToDo } from '../schema/todos';
 
-const GetTodosModel = async (): Promise<Todo[] | []> => {
+const GetTodosModel = async (): Promise<TodoEntity[] | []> => {
     try {
         const response = await ToDo.find({}).exec();
 
         if (!response) {
             return [];
         }
-        const todos = response.map((todo) => {
+        const todos = response.map((todo: TodoEntity) => {
             return {
-                _id: todo.id as string,
+                _id: todo._id as string,
                 title: todo.title as string,
                 description: todo.description as string,
                 completed: todo.completed as boolean,
                 createdAt: todo.createdAt as string,
                 updatedAt: todo.updatedAt as string
-            } as Todo
+            } as TodoEntity
         })
 
         return todos;
@@ -27,7 +28,7 @@ const GetTodosModel = async (): Promise<Todo[] | []> => {
     }
 }
 
-const GetTodoModel = async (id: String): Promise<Todo> => {
+const GetTodoModel = async (id: String): Promise<TodoEntity> => {
     try {
         const response = await ToDo.findById(id).exec();
         if (!response) {
@@ -41,7 +42,7 @@ const GetTodoModel = async (id: String): Promise<Todo> => {
             completed: response.completed as boolean,
             createdAt: response.createdAt as string,
             updatedAt: response.updatedAt as string
-        } as Todo
+        } as TodoEntity
 
         return todo;
     } catch (error) {
@@ -50,15 +51,7 @@ const GetTodoModel = async (id: String): Promise<Todo> => {
     }
 }
 
-const GetCategoryTodosModel = async (category: String): Promise<Todo[] | []> => {
-    try {
-
-
-    }
-
-}
-
-const CreateTodoModel = async (todo: Todo): Promise<Todo> => {
+const CreateTodoModel = async (todo: TodoEntity): Promise<TodoEntity> => {
     try {
         const newTodo = new ToDo({
             title: todo.title,
@@ -78,7 +71,7 @@ const CreateTodoModel = async (todo: Todo): Promise<Todo> => {
             completed: response.completed as boolean,
             createdAt: response.createdAt as string,
             updatedAt: response.updatedAt as string
-        } as Todo
+        } as TodoEntity
 
         return createdTodo;
     } catch (error) {
@@ -87,7 +80,7 @@ const CreateTodoModel = async (todo: Todo): Promise<Todo> => {
     }
 }
 
-const UpdateTodoModel = async (id: String, todo: Todo): Promise<Todo> => {
+const UpdateTodoModel = async (id: String, todo: TodoEntity): Promise<TodoEntity> => {
     try {
         const response = await ToDo.findByIdAndUpdate(id, todo, { new: true }).exec();
 
@@ -101,7 +94,7 @@ const UpdateTodoModel = async (id: String, todo: Todo): Promise<Todo> => {
             completed: response.completed as boolean,
             createdAt: response.createdAt as string,
             updatedAt: response.updatedAt as string
-        } as Todo
+        } as TodoEntity
 
         return updatedTodo;
     } catch (error) {

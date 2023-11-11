@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-import { TodoSchema } from "./todo"
 
 const todoCategorySchema = new mongoose.Schema({
     name: String,
@@ -7,7 +6,7 @@ const todoCategorySchema = new mongoose.Schema({
     color: String,
     createdAt: String,
     updatedAt: String,
-    items: [TodoSchema]
+    numberOfItems: Number,
 });
 
 const TodoCategory = mongoose.model('ToDoCategory', todoCategorySchema);

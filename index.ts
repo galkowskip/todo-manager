@@ -8,7 +8,7 @@ import './db'
 dotenv.config();
 
 import todoRouter from './routes/todos';
-
+import categoriesRouter from './routes/categories';
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -28,6 +28,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/todos', todoRouter);
+app.use('/todos/categories', categoriesRouter);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
