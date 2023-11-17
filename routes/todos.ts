@@ -15,7 +15,9 @@ router.get('/', async (req, res) => {
         category: query.category as string,
         search: query.search as string,
         dateStart: query.dateStart as string,
-        dateEnd: query.dateEnd as string
+        dateEnd: query.dateEnd as string,
+        sortBy: query.sortBy as string,
+        sortDir: query.sortDir == 'true' ? true : false as boolean
     } as TodoFiltersEntity
 
     const todos = await GetTodos(filters)

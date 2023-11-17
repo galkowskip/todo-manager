@@ -17,6 +17,8 @@ interface TodoFiltersEntity {
     completed?: boolean;
     dateStart?: string;
     dateEnd?: string;
+    sortBy?: string;
+    sortDir?: boolean;
 }
 
 interface TodoCategoryEntity {

@@ -30,7 +30,11 @@ const GetTodosModel = async (filters: TodoFiltersEntity): Promise<TodoEntity[] |
             }
         }
 
-        const response = await ToDo.find(findQuery).exec();
+        const response = (await ToDo.find(findQuery, null, filters.sortBy ? {
+            sort: {
+                [filters.sortBy]: filters.sortDir ? 1 : -1
+            }
+        } : {}).exec());
 
         if (!response) {
             return [];
