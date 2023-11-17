@@ -1,4 +1,5 @@
 // use postgress to control todos
+import { DeleteTodo, GetTodos, UpdateTodo } from '../controllers/todos';
 import '../db';
 import type { TodoCategoryEntity } from '../entities/todo';
 
@@ -115,6 +116,13 @@ export async function UpdateCategoryModel(id: string, category: TodoCategoryEnti
 
 export async function DeleteCategoryModel(id: string): Promise<Boolean | Error> {
     try {
+
+        const todos = await GetTodos({ category: id });
+
+        todos.forEach(async (todo) => {
+            await UpdateTodo(todo._id, { ...todo, category: '' })
+        })
+
         await ToDoCategory.findByIdAndDelete(id).exec();
         return true;
     } catch (error) {
