@@ -4,13 +4,14 @@ import type { TodoCategoryEntity } from '../entities/todo';
 
 import ToDoCategory from '../schema/todoCategory';
 
-export async function GetCategoriesModel(): Promise<TodoCategoryEntity[]> {
+export async function GetCategoriesModel(): Promise<TodoCategoryEntity[] | Error> {
     try {
-        const response = await ToDoCategory.find({}).exec();
+        const response = await ToDoCategory.find({}).exec()
 
         if (!response) {
-            return [];
+            throw new Error('Category not found');
         }
+
         const categories = response.map((category: any) => {
             return {
                 _id: category._id as string,
@@ -25,12 +26,12 @@ export async function GetCategoriesModel(): Promise<TodoCategoryEntity[]> {
 
         return categories;
     } catch (error) {
-        console.log(error)
-        throw error
+
+        return error as Error
     }
 }
 
-export async function GetCategoryModel(id: String): Promise<TodoCategoryEntity> {
+export async function GetCategoryModel(id: String): Promise<TodoCategoryEntity | Error> {
     try {
         const response = await ToDoCategory.findById(id).exec();
         if (!response) {
@@ -49,12 +50,11 @@ export async function GetCategoryModel(id: String): Promise<TodoCategoryEntity> 
 
         return category;
     } catch (error) {
-        console.log(error)
-        throw error
+        return error as Error
     }
 }
 
-export async function CreateCategoryModel(category: TodoCategoryEntity): Promise<TodoCategoryEntity> {
+export async function CreateCategoryModel(category: TodoCategoryEntity): Promise<TodoCategoryEntity | Error> {
     try {
         const newCategory = new ToDoCategory({
             name: category.name,
@@ -78,12 +78,11 @@ export async function CreateCategoryModel(category: TodoCategoryEntity): Promise
 
         return newCategoryEntity;
     } catch (error) {
-        console.log(error)
-        throw error
+        return error as Error
     }
 }
 
-export async function UpdateCategoryModel(id: string, category: TodoCategoryEntity): Promise<TodoCategoryEntity> {
+export async function UpdateCategoryModel(id: string, category: TodoCategoryEntity): Promise<TodoCategoryEntity | Error> {
     try {
         const response = await ToDoCategory.findByIdAndUpdate(id, {
             name: category.name,
@@ -110,17 +109,15 @@ export async function UpdateCategoryModel(id: string, category: TodoCategoryEnti
 
         return updatedCategory;
     } catch (error) {
-        console.log(error)
-        throw error
+        return error as Error
     }
 }
 
-export async function DeleteCategoryModel(id: string): Promise<Boolean> {
+export async function DeleteCategoryModel(id: string): Promise<Boolean | Error> {
     try {
         await ToDoCategory.findByIdAndDelete(id).exec();
         return true;
     } catch (error) {
-        console.log(error)
-        throw error
+        return error as Error
     }
 }

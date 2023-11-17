@@ -10,7 +10,8 @@ const GetTodosModel = async (): Promise<TodoEntity[] | []> => {
         if (!response) {
             return [];
         }
-        const todos = response.map((todo: TodoEntity) => {
+        const todos = response.map((todo: any) => {
+
             return {
                 _id: todo._id as string,
                 title: todo.title as string,
@@ -23,7 +24,6 @@ const GetTodosModel = async (): Promise<TodoEntity[] | []> => {
 
         return todos;
     } catch (error) {
-        console.log(error)
         throw error
     }
 }
@@ -46,7 +46,6 @@ const GetTodoModel = async (id: String): Promise<TodoEntity> => {
 
         return todo;
     } catch (error) {
-        console.log(error)
         throw error
     }
 }
@@ -75,7 +74,6 @@ const CreateTodoModel = async (todo: TodoEntity): Promise<TodoEntity> => {
 
         return createdTodo;
     } catch (error) {
-        console.log(error)
         throw error
     }
 }
@@ -98,7 +96,6 @@ const UpdateTodoModel = async (id: String, todo: TodoEntity): Promise<TodoEntity
 
         return updatedTodo;
     } catch (error) {
-        console.log(error)
         throw error
     }
 }
@@ -108,7 +105,6 @@ const DeleteTodoModel = async (id: String): Promise<Boolean> => {
         await ToDo.findByIdAndDelete(id).exec();
         return true;
     } catch (error) {
-        console.log(error)
         throw error
     }
 }
