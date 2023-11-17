@@ -10,6 +10,15 @@ interface TodoEntity {
     category: string;
 }
 
+interface TodoFiltersEntity {
+    id?: string;
+    search?: string;
+    category?: string;
+    completed?: boolean;
+    dateStart?: string;
+    dateEnd?: string;
+}
+
 interface TodoCategoryEntity {
     _id: string;
     name: string;
@@ -22,5 +31,6 @@ interface TodoCategoryEntity {
 
 export type {
     TodoEntity,
+    TodoFiltersEntity,
     TodoCategoryEntity
 }

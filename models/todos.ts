@@ -1,11 +1,36 @@
-// use postgress to control todos
 import '../db';
-import type { TodoEntity } from '../entities/todo';
+
+import type { TodoEntity, TodoFiltersEntity } from '../entities/todo';
 import { ToDo } from '../schema/todos';
 
-const GetTodosModel = async (): Promise<TodoEntity[] | []> => {
+const GetTodosModel = async (filters: TodoFiltersEntity): Promise<TodoEntity[] | []> => {
     try {
-        const response = await ToDo.find({}).exec();
+
+        let findQuery = {} as any
+
+        if (filters.id) {
+            findQuery = { ...findQuery, _id: filters.id }
+        }
+        if (filters.completed) {
+            findQuery = { ...findQuery, completed: filters.completed }
+        }
+        if (filters.category) {
+            findQuery = { ...findQuery, category: filters.category }
+        }
+        if (filters.search) {
+            findQuery = { ...findQuery, title: { $regex: filters.search, $options: 'i' } }
+        }
+        if (filters.dateStart && filters.dateEnd) {
+            findQuery = {
+                ...findQuery,
+                createdAt: {
+                    $gte: filters.dateStart,
+                    $lte: filters.dateEnd
+                }
+            }
+        }
+
+        const response = await ToDo.find(findQuery).exec();
 
         if (!response) {
             return [];

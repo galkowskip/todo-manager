@@ -1,9 +1,9 @@
-import type { TodoEntity } from '../entities/todo';
+import type { TodoEntity, TodoFiltersEntity } from '../entities/todo';
 
 import { GetTodosModel, CreateTodoModel, GetTodoModel, UpdateTodoModel, DeleteTodoModel, } from '../models/todos';
 
-const GetTodos = async (): Promise<TodoEntity[] | []> => {
-    return await GetTodosModel();
+const GetTodos = async (filters: TodoFiltersEntity): Promise<TodoEntity[] | []> => {
+    return await GetTodosModel(filters);
 }
 
 const GetTodo = async (id: String): Promise<TodoEntity> => {

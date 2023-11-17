@@ -1,11 +1,24 @@
 import { Router } from "express"
 
 import { GetTodos, GetTodo, CreateTodo, UpdateTodo, DeleteTodo } from "../controllers/todos"
+import { TodoFiltersEntity } from "../entities/todo"
 
 const router = Router()
 
-router.get('/', async (_, res) => {
-    const todos = await GetTodos()
+router.get('/', async (req, res) => {
+
+    const query = req.query
+
+    const filters = {
+        id: query.id as string,
+        completed: query.completed as boolean | undefined,
+        category: query.category as string,
+        search: query.search as string,
+        dateStart: query.dateStart as string,
+        dateEnd: query.dateEnd as string
+    } as TodoFiltersEntity
+
+    const todos = await GetTodos(filters)
     res.send(todos)
 })
 
