@@ -16,9 +16,11 @@ const GetTodosModel = async (): Promise<TodoEntity[] | []> => {
                 _id: todo._id as string,
                 title: todo.title as string,
                 description: todo.description as string,
+                deadline: todo.deadline as string,
                 completed: todo.completed as boolean,
                 createdAt: todo.createdAt as string,
-                updatedAt: todo.updatedAt as string
+                updatedAt: todo.updatedAt as string,
+                category: todo.category as string
             } as TodoEntity
         })
 
@@ -39,9 +41,11 @@ const GetTodoModel = async (id: String): Promise<TodoEntity> => {
             _id: response.id as string,
             title: response.title as string,
             description: response.description as string,
+            deadline: response.deadline as string,
             completed: response.completed as boolean,
             createdAt: response.createdAt as string,
-            updatedAt: response.updatedAt as string
+            updatedAt: response.updatedAt as string,
+            category: response.category as string
         } as TodoEntity
 
         return todo;
@@ -55,6 +59,7 @@ const CreateTodoModel = async (todo: TodoEntity): Promise<TodoEntity> => {
         const newTodo = new ToDo({
             title: todo.title,
             description: todo.description,
+            deadline: todo.deadline,
             completed: todo.completed,
             createdAt: todo.createdAt,
             updatedAt: todo.updatedAt,
@@ -67,9 +72,11 @@ const CreateTodoModel = async (todo: TodoEntity): Promise<TodoEntity> => {
             _id: response.id as string,
             title: response.title as string,
             description: response.description as string,
+            deadline: response.deadline as string,
             completed: response.completed as boolean,
             createdAt: response.createdAt as string,
-            updatedAt: response.updatedAt as string
+            updatedAt: response.updatedAt as string,
+            category: response.category as string
         } as TodoEntity
 
         return createdTodo;
@@ -89,9 +96,11 @@ const UpdateTodoModel = async (id: String, todo: TodoEntity): Promise<TodoEntity
         const updatedTodo = {
             title: response.title as string,
             description: response.description as string,
+            deadline: response.deadline as string,
             completed: response.completed as boolean,
             createdAt: response.createdAt as string,
-            updatedAt: response.updatedAt as string
+            updatedAt: response.updatedAt as string,
+            category: response.category as string
         } as TodoEntity
 
         return updatedTodo;

@@ -6,6 +6,7 @@ const todoSchema = new mongoose.Schema({
     completed: Boolean,
     createdAt: String,
     updatedAt: String,
+    deadline: String,
     category: String
 });
 
