@@ -1,13 +1,13 @@
 // use postgress to control todos
-import { DeleteTodo, GetTodos, UpdateTodo } from '../controllers/todos';
+import { GetTodos, UpdateTodo } from '../controllers/todos';
 import '../db';
-import type { TodoCategoryEntity } from '../entities/todo';
+import type { TodoCategoryEntity, TodoEntity } from '../entities/todo';
 
-import ToDoCategory from '../schema/todoCategory';
+import { TodoCategory } from '../schema/todoCategory';
 
 export async function GetCategoriesModel(): Promise<TodoCategoryEntity[] | Error> {
     try {
-        const response = await ToDoCategory.find({}).exec()
+        const response = await TodoCategory.find({}).exec()
 
         if (!response) {
             throw new Error('Category not found');
@@ -34,7 +34,7 @@ export async function GetCategoriesModel(): Promise<TodoCategoryEntity[] | Error
 
 export async function GetCategoryModel(id: String): Promise<TodoCategoryEntity | Error> {
     try {
-        const response = await ToDoCategory.findById(id).exec();
+        const response = await TodoCategory.findById(id).exec();
         if (!response) {
             throw new Error('Category not found');
         }
@@ -55,9 +55,65 @@ export async function GetCategoryModel(id: String): Promise<TodoCategoryEntity |
     }
 }
 
+export async function AddTodoToCategoryModel(id: string): Promise<TodoCategoryEntity | Error> {
+    try {
+        const category = await TodoCategory.findByIdAndUpdate(id, {
+            $inc: {
+                numberOfItems: 1
+            }
+        }, { new: true }).exec();
+
+        if (!category) {
+            throw new Error('Category not found');
+        }
+
+        const updatedCategory = {
+            _id: category.id as string,
+            name: category.name as string,
+            description: category.description as string,
+            color: category.color as string,
+            createdAt: category.createdAt as string,
+            updatedAt: category.updatedAt as string,
+            numberOfItems: category.numberOfItems as number,
+        } as TodoCategoryEntity
+
+        return updatedCategory;
+    } catch (error) {
+        return error as Error
+    }
+}
+
+export async function RemoveTodoFromCategoryModel(id: string): Promise<TodoCategoryEntity | Error> {
+    try {
+        const category = await TodoCategory.findByIdAndUpdate(id, {
+            $inc: {
+                numberOfItems: -1
+            }
+        }, { new: true }).exec();
+
+        if (!category) {
+            throw new Error('Category not found');
+        }
+
+        const updatedCategory = {
+            _id: category.id as string,
+            name: category.name as string,
+            description: category.description as string,
+            color: category.color as string,
+            createdAt: category.createdAt as string,
+            updatedAt: category.updatedAt as string,
+            numberOfItems: category.numberOfItems as number,
+        } as TodoCategoryEntity
+
+        return updatedCategory;
+    } catch (error) {
+        return error as Error
+    }
+}
+
 export async function CreateCategoryModel(category: TodoCategoryEntity): Promise<TodoCategoryEntity | Error> {
     try {
-        const newCategory = new ToDoCategory({
+        const newCategory = new TodoCategory({
             name: category.name,
             description: category.description,
             color: category.color,
@@ -85,7 +141,7 @@ export async function CreateCategoryModel(category: TodoCategoryEntity): Promise
 
 export async function UpdateCategoryModel(id: string, category: TodoCategoryEntity): Promise<TodoCategoryEntity | Error> {
     try {
-        const response = await ToDoCategory.findByIdAndUpdate(id, {
+        const response = await TodoCategory.findByIdAndUpdate(id, {
             name: category.name,
             description: category.description,
             color: category.color,
@@ -123,7 +179,7 @@ export async function DeleteCategoryModel(id: string): Promise<Boolean | Error> 
             await UpdateTodo(todo._id, { ...todo, category: '' })
         })
 
-        await ToDoCategory.findByIdAndDelete(id).exec();
+        await TodoCategory.findByIdAndDelete(id).exec();
         return true;
     } catch (error) {
         return error as Error

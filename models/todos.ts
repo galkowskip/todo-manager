@@ -3,6 +3,8 @@ import '../db';
 import type { TodoEntity, TodoFiltersEntity } from '../entities/todo';
 import { ToDo } from '../schema/todos';
 
+import { AddTodoToCategoryModel, RemoveTodoFromCategoryModel } from './categories';
+
 const GetTodosModel = async (filters: TodoFiltersEntity): Promise<TodoEntity[] | []> => {
     try {
 
@@ -97,6 +99,10 @@ const CreateTodoModel = async (todo: TodoEntity): Promise<TodoEntity> => {
 
         const response = await newTodo.save();
 
+        if (newTodo.category) {
+            await AddTodoToCategoryModel(newTodo.category);
+        }
+
         const createdTodo = {
             _id: response.id as string,
             title: response.title as string,
@@ -116,7 +122,7 @@ const CreateTodoModel = async (todo: TodoEntity): Promise<TodoEntity> => {
 
 const UpdateTodoModel = async (id: String, todo: TodoEntity): Promise<TodoEntity> => {
     try {
-        const response = await ToDo.findByIdAndUpdate(id, todo, { new: true }).exec();
+        const response = await ToDo.findByIdAndUpdate(id, todo, { new: false }).exec()
 
         if (!response) {
             throw new Error('Todo not found');
@@ -132,15 +138,26 @@ const UpdateTodoModel = async (id: String, todo: TodoEntity): Promise<TodoEntity
             category: response.category as string
         } as TodoEntity
 
+        if (todo.category !== updatedTodo.category) {
+            await AddTodoToCategoryModel(todo.category);
+            await RemoveTodoFromCategoryModel(updatedTodo.category);
+        }
+
         return updatedTodo;
     } catch (error) {
         throw error
     }
 }
 
-const DeleteTodoModel = async (id: String): Promise<Boolean> => {
+const DeleteTodoModel = async (id: string): Promise<Boolean> => {
     try {
-        await ToDo.findByIdAndDelete(id).exec();
+        const deletedTodo = await ToDo.findByIdAndDelete(id).exec() as any;
+
+        if (typeof deletedTodo.category === 'string') {
+            console.log(deletedTodo.category)
+            await RemoveTodoFromCategoryModel(deletedTodo.category);
+        }
+
         return true;
     } catch (error) {
         throw error

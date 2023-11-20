@@ -6,7 +6,7 @@ const GetTodos = async (filters: TodoFiltersEntity): Promise<TodoEntity[] | []> 
     return await GetTodosModel(filters);
 }
 
-const GetTodo = async (id: String): Promise<TodoEntity> => {
+const GetTodo = async (id: string): Promise<TodoEntity> => {
     return await GetTodoModel(id)
 }
 
@@ -14,11 +14,11 @@ const CreateTodo = async (todo: TodoEntity): Promise<TodoEntity> => {
     return await CreateTodoModel(todo);
 }
 
-const UpdateTodo = async (id: String, todo: TodoEntity): Promise<TodoEntity> => {
+const UpdateTodo = async (id: string, todo: TodoEntity): Promise<TodoEntity> => {
     return await UpdateTodoModel(id, todo);
 }
 
-const DeleteTodo = async (id: String): Promise<Boolean> => {
+const DeleteTodo = async (id: string): Promise<Boolean> => {
     return await DeleteTodoModel(id);
 }
 

@@ -12,4 +12,4 @@ const todoCategorySchema = new mongoose.Schema({
 const TodoCategory = mongoose.model('ToDoCategory', todoCategorySchema);
 
 
-export default TodoCategory
+export { TodoCategory }
