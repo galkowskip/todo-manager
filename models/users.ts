@@ -6,21 +6,19 @@ import { setPassword } from '../strategies/local';
 
 export async function GetUsersModelByUsername(username: string): Promise<UserEntity> {
     try {
-        const user = User.find({ username: username }, false, {
-            limit: 1
-        }).exec();
+        const user = await User.findOne({ username: username }).exec();
 
         if (!user) {
             throw new Error('User not found');
         }
 
-        const userToReturn = {
-            _id: user._id,
-            username: user.username,
-            password: user.password,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        } as UserEntity
+        const userToReturn: UserEntity = {
+            _id: user.id as string,
+            username: user.username as string,
+            password: user.password as string,
+            createdAt: user.createdAt as string,
+            updatedAt: user.updatedAt as string,
+        }
 
         return userToReturn;
     } catch (error) {
@@ -29,14 +27,14 @@ export async function GetUsersModelByUsername(username: string): Promise<UserEnt
 }
 export async function GetUsersModelById(id: string): Promise<UserEntity> {
     try {
-        const user = User.findById(id).exec();
+        const user = await User.findById(id).exec();
 
         if (!user) {
             throw new Error('User not found');
         }
 
         const userToReturn = {
-            _id: user._id,
+            _id: user.id,
             username: user.username,
             password: user.password,
             createdAt: user.createdAt,
@@ -63,7 +61,7 @@ export async function CreateUserModel(username: string, password: string): Promi
         const response = await newUser.save();
 
         return {
-            _id: response._id,
+            _id: response.id,
             username: response.username,
             password: response.password,
             createdAt: response.createdAt,
