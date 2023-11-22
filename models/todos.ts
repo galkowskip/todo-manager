@@ -154,7 +154,6 @@ const DeleteTodoModel = async (id: string): Promise<Boolean> => {
         const deletedTodo = await ToDo.findByIdAndDelete(id).exec() as any;
 
         if (typeof deletedTodo.category === 'string') {
-            console.log(deletedTodo.category)
             await RemoveTodoFromCategoryModel(deletedTodo.category);
         }
 

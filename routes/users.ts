@@ -1,14 +1,14 @@
 import { Router } from "express";
-import { createUser } from "../controllers/users";
+import { createUser, getAllUsers } from "../controllers/users";
 
 
 const router = Router();
 
 router.post("/register", async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { username, password, email } = req.body;
 
-        if (!email || !password) {
+        if (!email || !password || !username) {
             return res.status(400).json({ errorMessage: "Please enter all required fields." });
         }
 
@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ errorMessage: "Please enter a password of at least 6 characters." });
         }
 
-        const user = await createUser(email, password);
+        const user = await createUser(username, password, email);
 
         res.status(200).send(user);
 
@@ -24,5 +24,14 @@ router.post("/register", async (req, res) => {
         res.status(500).send(err);
     }
 });
+
+router.get("/all", async (req, res) => {
+    try {
+        const users = await getAllUsers();
+        return res.status(200).send(users)
+    } catch (err) {
+        res.status(500).send(err);
+    }
+})
 
 export default router;

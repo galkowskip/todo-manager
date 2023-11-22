@@ -121,6 +121,7 @@ export async function CreateCategoryModel(category: TodoCategoryEntity): Promise
             updatedAt: category.updatedAt,
             numberOfItems: category.numberOfItems,
         });
+
         const response = await newCategory.save();
 
         const newCategoryEntity = {

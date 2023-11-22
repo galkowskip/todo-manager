@@ -5,3 +5,9 @@ export interface UserEntity {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface UserFilters {
+    id?: string;
+    username?: string;
+    email?: string;
+}

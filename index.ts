@@ -33,7 +33,6 @@ app.use('/todos', todoRouter);
 app.use('/categories', categoriesRouter);
 app.use('/user', usersRouter);
 
-
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
