@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createUser, getAllUsers } from "../controllers/users";
 
+import passport from '../passport';
 
 const router = Router();
 
@@ -24,6 +25,11 @@ router.post("/register", async (req, res) => {
         res.status(500).send(err);
     }
 });
+
+router.post("/login", passport.authenticate('local', {
+    successMessage: 'Logged in successfully',
+    failureMessage: 'Invalid credentials'
+}));
 
 router.get("/all", async (req, res) => {
     try {
