@@ -26,10 +26,21 @@ router.post("/register", async (req, res) => {
     }
 });
 
-router.post("/login", passport.authenticate('local', {
-    successMessage: 'Logged in successfully',
-    failureMessage: 'Invalid credentials'
-}));
+router.post("/login", (_, __, next) => {
+    console.log('login')
+    next()
+},
+    passport.authenticate('local')
+)
+
+router.get("/me", (req, res) => {
+    console.log(req.user)
+    if (!req.user) {
+        return res.status(401).send("Not logged in");
+    }
+
+    return res.status(200).send(req.user);
+})
 
 router.get("/all", async (req, res) => {
     try {

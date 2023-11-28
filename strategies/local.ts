@@ -3,7 +3,7 @@ import { GetUsersModel } from '../models/users';
 
 import crypto from 'crypto';
 
-const salt = crypto.randomBytes(16).toString('hex');
+const salt = process.env.SALT || 'salt';
 
 export const setPassword = function (password: string): string {
     const buffer = crypto.pbkdf2Sync(password, salt,
@@ -20,7 +20,7 @@ export const validatePassword = function (password: string, savedPassword: strin
 
 const localStrategy = new LocalStrategy(
     async function (username: string, password: string, done: Function) {
-
+        console.log('localStrategy', username, password)
         try {
             const user = await GetUsersModel({ username })
 
@@ -30,6 +30,14 @@ const localStrategy = new LocalStrategy(
             if (validatePassword(password, user.password)) {
                 return done(null, user)
             }
+            console.log(
+                {
+                    password,
+                    userPassword: user.password,
+                    validatePassword: validatePassword(password, user.password)
+                }
+            )
+            return done(null, false, { message: 'Incorrect password.' });
         } catch (error) {
             return done(error)
         }

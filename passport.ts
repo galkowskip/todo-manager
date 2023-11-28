@@ -8,6 +8,7 @@ passport.use(localStrategy);
 
 passport.serializeUser(function (user: any, cb: Function) {
     process.nextTick(function () {
+        console.log('serializeUser', user);
         return cb(null, {
             id: user._id,
             username: user.username,
@@ -18,6 +19,7 @@ passport.serializeUser(function (user: any, cb: Function) {
 
 passport.deserializeUser(function (user: UserEntity, cb: Function) {
     process.nextTick(function () {
+        console.log('deserializeUser', user);
         return cb(null, user);
     });
 });

@@ -6,7 +6,6 @@ import { TodoFiltersEntity } from "../entities/todo"
 const router = Router()
 
 router.get('/', async (req, res) => {
-
     const query = req.query
 
     const filters = {
@@ -31,6 +30,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+
     const todo = req.body
     const newTodo = await CreateTodo(todo)
     res.send(newTodo)
