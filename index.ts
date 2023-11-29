@@ -31,10 +31,9 @@ app.use(session({
   cookie: { secure: true }
 }))
 
-// app.use(passport.authenticate('session'));
+app.use(passport.authenticate('session'));
 
 app.get('/', (req: Request, res: Response) => {
-  console.log('GET /');
   res.send('Express + TypeScript Server');
 });
 

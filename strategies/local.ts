@@ -2,6 +2,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { GetUsersModel } from '../models/users';
 
 import crypto from 'crypto';
+import { UserEntity } from '../entities/users';
 
 const salt = process.env.SALT || 'salt';
 
@@ -20,24 +21,22 @@ export const validatePassword = function (password: string, savedPassword: strin
 
 const localStrategy = new LocalStrategy(
     async function (username: string, password: string, done: Function) {
-        console.log('localStrategy', username, password)
         try {
             const user = await GetUsersModel({ username })
+            if (typeof user === 'boolean') {
+                return done(null, false, { message: 'User not found.' });
+            }
 
-            if (!user || user === null || !user.password) {
+            const userE = user as UserEntity;
+
+            if (!userE || userE === null || !userE.password) {
                 return done(null, false, { message: 'Incorrect username.' });
             }
-            if (validatePassword(password, user.password)) {
+            if (validatePassword(password, userE.password)) {
                 return done(null, user)
+            } else {
+                return done(null, false, { message: 'Incorrect password.' });
             }
-            console.log(
-                {
-                    password,
-                    userPassword: user.password,
-                    validatePassword: validatePassword(password, user.password)
-                }
-            )
-            return done(null, false, { message: 'Incorrect password.' });
         } catch (error) {
             return done(error)
         }

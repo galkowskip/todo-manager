@@ -18,8 +18,8 @@ export async function checkIfEmailIsInUse(email: string): Promise<boolean> {
     try {
         const response = await GetUsersModel({ email });
 
-        if (!response) {
-            return false;
+        if (!response || typeof response === 'boolean') {
+            throw new Error('Email is already in use');
         }
 
         return true;
@@ -32,8 +32,8 @@ export async function checkIfUsernameIsInUse(username: string): Promise<boolean>
     try {
         const response = await GetUsersModel({ username });
 
-        if (!response) {
-            return false;
+        if (!response || typeof response === 'boolean') {
+            throw new Error('Username is already in use');
         }
 
         return true;

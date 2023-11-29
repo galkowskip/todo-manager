@@ -27,14 +27,12 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", (_, __, next) => {
-    console.log('login')
     next()
 },
     passport.authenticate('local')
 )
 
 router.get("/me", (req, res) => {
-    console.log(req.user)
     if (!req.user) {
         return res.status(401).send("Not logged in");
     }

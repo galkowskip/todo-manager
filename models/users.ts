@@ -28,7 +28,7 @@ export async function GetAllUsers(): Promise<UserEntity[]> {
     }
 }
 
-export async function GetUsersModel(userFilters: UserFilters): Promise<UserEntity> {
+export async function GetUsersModel(userFilters: UserFilters): Promise<UserEntity | Boolean> {
     try {
         let findQuery = {} as any;
 
@@ -43,12 +43,13 @@ export async function GetUsersModel(userFilters: UserFilters): Promise<UserEntit
         const user = await User.findOne(userFilters).exec();
 
         if (!user) {
-            throw new Error('User not found');
+            return false
         }
 
         const userToReturn: UserEntity = {
             _id: user.id as string,
             username: user.username as string,
+            email: user.email as string,
             password: user.password as string,
             createdAt: user.createdAt as string,
             updatedAt: user.updatedAt as string,
@@ -59,12 +60,12 @@ export async function GetUsersModel(userFilters: UserFilters): Promise<UserEntit
         throw error
     }
 }
-export async function GetUsersModelById(id: string): Promise<UserEntity> {
+export async function GetUsersModelById(id: string): Promise<UserEntity | Boolean> {
     try {
         const user = await User.findById(id).exec();
 
         if (!user) {
-            throw new Error('User not found');
+            return false
         }
 
         const userToReturn = {
@@ -83,10 +84,6 @@ export async function GetUsersModelById(id: string): Promise<UserEntity> {
 
 export async function CreateUserModel(username: string, password: string, email: string): Promise<UserEntity> {
     try {
-
-
-
-
         const newUser = new User({
             username: username,
             password: setPassword(password),
@@ -95,7 +92,6 @@ export async function CreateUserModel(username: string, password: string, email:
             updatedAt: new Date().toDateString(),
         });
 
-        console.log(newUser)
 
         const response = await newUser.save();
 
